@@ -1,0 +1,42 @@
+{
+  "name": "esy-zlib",
+  "version": "1.3.1000",
+  "description": "zlib packaged for esy",
+  "source": "https://zlib.net/zlib-1.3.1.tar.gz#sha256:9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+  "override": {
+    "exportedEnv": {
+      "CFLAGS": {
+        "scope": "global",
+        "val": "-I#{self.install / 'include'} $CFLAGS"
+      },
+      "LDFLAGS": {
+        "scope": "global",
+        "val": "-L#{self.lib} -lz $LDFLAGS"
+      },
+      "PKG_CONFIG_PATH": {
+        "scope": "global",
+        "val": "#{self.lib / 'pkgconfig' : $PKG_CONFIG_PATH }"
+      },
+      "Z_LIB_PATH": {
+        "val": "#{self.lib}",
+        "scope": "global"
+      }
+    },
+    "buildEnv": {
+      "CHOST": "#{os == 'windows' ? 'x86_64-w64-mingw32': '' }",
+      "CFLAGS": "-fPIC -O2"
+    },
+    "build": [
+      [
+        "bash",
+        "-c",
+        "./configure --prefix=$cur__install #{os == 'windows' ? '--uname=cygwin' : ''}"
+      ],
+      "make",
+      "make test"
+    ],
+    "install": "make install",
+    "buildsInSource": true,
+    "dependencies": {}
+  }
+}

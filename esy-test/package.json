@@ -1,0 +1,11 @@
+{
+  "esy": {
+    "build": [
+      "#{os == 'windows' ? 'x86_64-w64-mingw32-':''}gcc example.c -I#{esy-zlib.install / 'include'} -L#{esy-zlib.lib} -lz -o test",
+      "./test"
+    ]
+  },
+  "dependencies": {
+    "esy-zlib": "*"
+  }
+}
